@@ -8,7 +8,7 @@ namespace AlunosApi.Services
     public interface IAlunoService
     {
         Task<IEnumerable<Aluno>> ObterAlunos();
-        Task<Aluno> ObterALuno(int id);
+        Task<Aluno> ObterAluno(int id);
         Task<IEnumerable<Aluno>> ObterALunosPorNome(string nome);
         Task CriarAluno(Aluno aluno);
         Task AtualizarAluno(Aluno aluno);

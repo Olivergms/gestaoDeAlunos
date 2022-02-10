@@ -51,12 +51,12 @@ namespace AlunosApi.Controllers
             }
         }
 
-        [HttpGet("{id:int}")]
+        [HttpGet("{id:int}", Name = "ObterAluno")]
         public async Task<ActionResult<Aluno>> ObterAlunoPorId(int id)
         {
             try
             {
-                var aluno = await _alunoService.ObterALuno(id);
+                var aluno = await _alunoService.ObterAluno(id);
 
                 if (aluno == null) return NotFound($"Não existe aluno com o id={id}");
 
@@ -65,8 +65,73 @@ namespace AlunosApi.Controllers
             catch 
             {
 
-                throw;
+                return BadRequest("Requisição inválida");
             }
         }
+
+        [HttpPost]
+        public async Task<ActionResult> CriarAluno(Aluno aluno)
+        {
+            try
+            {
+                await _alunoService.CriarAluno(aluno);
+
+                return CreatedAtRoute("ObterAluno", new { id = aluno.Id }, aluno);
+            }
+            catch
+            {
+
+                return BadRequest("Requisição inválida");
+            }
+        }
+
+        [HttpPut("{id:int}")]
+        public async Task<ActionResult> AtualizarAluno(int id, [FromBody]Aluno aluno)
+        {
+            try
+            {
+                if(aluno.Id == id)
+                {
+                    await _alunoService.AtualizarAluno(aluno);
+                    return Ok($"Aluno com id:{id} foi atualizado com sucesso");
+                }
+                else
+                {
+                    return BadRequest("Dados inconsistentes");
+                }
+            }
+            catch
+            {
+
+                return BadRequest("Requisição inválida");
+            }
+        }
+
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult> RemoverAluno(int id)
+        {
+            try
+            {
+                var aluno = await _alunoService.ObterAluno(id);
+
+                if(aluno != null)
+                {
+                    await _alunoService.DeletarAluno(aluno);
+                    return Ok($"Aluno de id={id} foi excluido com sucesso");
+                }
+                else
+                {
+                    return NotFound($"Aluno com o id={id} não encontrado");
+                }
+            }
+            catch
+            {
+
+                return BadRequest("Requisição inválida");
+            }
+        }
+
+
     }
 }

@@ -54,7 +54,7 @@ namespace AlunosApi.Services
                 throw;
             }
         }
-        public async Task<Aluno> ObterALuno(int id)
+        public async Task<Aluno> ObterAluno(int id)
         {
             try
             {
